@@ -13,13 +13,16 @@ def get_filenames(path:str) -> list:
 def main() -> None:
     files = get_filenames(INPUT_PATH)
     for file in files:
-        video_path = os.path.join(INPUT_PATH, file)
-        video = VideoFileClip(video_path)
-        audio_name = os.path.basename(file)
-        audio_name += '.mp3'
-        audio_path = os.path.join(OUTPUT_PATH, audio_name)
-        audio = video.audio
-        audio.write_audiofile(audio_path)
+        try:
+            video_path = os.path.join(INPUT_PATH, file)
+            video = VideoFileClip(video_path)
+            audio_name, extension = os.path.splitext(file)
+            audio_name += '.mp3'
+            audio_path = os.path.join(OUTPUT_PATH, audio_name)
+            audio = video.audio
+            audio.write_audiofile(audio_path)
+        except Exception as e:
+            print(f'Erro: {file} -> {e}')
 
 if __name__ == '__main__':
     main()
